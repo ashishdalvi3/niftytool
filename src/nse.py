@@ -40,6 +40,7 @@ class Nse:
         html_soup = BeautifulSoup(res.text, 'lxml')
         hresponseDiv = html_soup.find("div", {"id": "responseDiv"})
         d = json.loads(hresponseDiv.get_text())
+        print(d)
         #print (d.keys())
         #d = json.loads(res.text)['data'][0]
         res = {}
@@ -57,20 +58,26 @@ class Nse:
         return res
 
     # This will return latest price of Equity stock
-    def get_current_ltp(self, data):
+    def get_data_for_key (self, data, key):
 
         for k in  data.keys():
             if k == 'data':
                 v = data[k]
                 for i in v:
-                    for price in i.keys():
-                        if price == 'lastPrice':
-                            price = (i[price])
+                    for price_key in i.keys():
+                        #print(key)
+                        if price_key == key:
+                            #print(price_key)
+                            #print(i[price_key])
+                            price = (i[price_key])
 
         if price != '' :
             return price
         else:
             return 'Price not found'
+
+
+
 
 '''
 if __name__ == "__main__":
