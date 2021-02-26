@@ -34,10 +34,15 @@ def get_open_price_equity(symbol):
     print (" Market closes at 4 PM, Close price will be correct after 4PM")
     print("Close Price for {} is {}".format(scrip_id, price))
 
+@click.command() # type: ignore
+def is_market_open():
 
-
+    n = Nse()
+    market_status = n.get_market_status()
+    print("Market is {} currently ".format(market_status))
 
 if __name__ == '__main__':
     #get_equity_price()
     #get_open_price_equity()
-    get_open_price_equity()
+    #get_open_price_equity()
+    is_market_open()
