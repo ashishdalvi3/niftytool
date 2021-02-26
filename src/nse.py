@@ -32,13 +32,15 @@ class Nse:
 
     def get_scrip_data(self, scrip):
 
-        print(" Accessing scrip_url " + self.scrip_url_old.format(scrip))
-        res = requests.get(self.scrip_url_old.format(scrip), headers = self.headers)
-
+        # Double check to convert symbol code to uppercase
+        symbol = scrip.upper()
+        print(" Accessing scrip_url " + self.scrip_url_old.format(symbol))
+        res = requests.get(self.scrip_url_old.format(symbol), headers = self.headers)
 
         html_soup = BeautifulSoup(res.text, 'lxml')
         hresponseDiv = html_soup.find("div", {"id": "responseDiv"})
         d = json.loads(hresponseDiv.get_text())
+        #print (d.keys())
         #d = json.loads(res.text)['data'][0]
         res = {}
         for k in d.keys():
@@ -70,9 +72,11 @@ class Nse:
         else:
             return 'Price not found'
 
+'''
 if __name__ == "__main__":
     n = Nse()
-    data = n.get_scrip_data('RELIANCE')
+    data = n.get_scrip_data(self.symbol)
     #print(data)
     price = n.get_current_ltp(data)
     print(price)
+'''
