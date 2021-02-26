@@ -7,6 +7,7 @@ class Nse:
 
     def __init__(self):
         self.headers = self.nse_headers()
+        self.market_status_url = 'https://www1.nseindia.com//emerge/homepage/smeNormalMktStatus.json'
         self.scrip_csv = 'https://www1.nseindia.com/content/equities/EQUITY_L.csv'
         self.scrip_url = 'https://www1.nseindia.com/corporates/content/securities_info.htm'
         self.scrip_url_old = 'https://www1.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuote.jsp?symbol={}&illiquid=0&smeFlag=0&itpFlag=0'
@@ -30,6 +31,7 @@ class Nse:
 
         return None
 
+    # This gets full data for any Equity symbol
     def get_scrip_data(self, scrip):
 
         # Double check to convert symbol code to uppercase
@@ -76,6 +78,18 @@ class Nse:
         else:
             return 'Price not found'
 
+    # This returns current market status 
+    # return type closed or open
+    def get_market_status(self):
+        
+        res = requests.get(self.market_status_url,headers =self.headers)
+        content = res.json()
+        #print (res.json())
+        for k in content.keys():
+            status = content[k]
+            
+            
+        return status
 
 
 
