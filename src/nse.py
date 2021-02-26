@@ -27,7 +27,7 @@ class Nse:
 
 
     # future work to get scrip details everytime
-    def validate_scrip(self):
+    def validate_scrip_code(self):
 
         return None
 
@@ -62,19 +62,24 @@ class Nse:
     # This will return latest price of Equity stock
     def get_data_for_key (self, data, key):
 
+        price =''
         for k in  data.keys():
             if k == 'data':
                 v = data[k]
                 for i in v:
                     for price_key in i.keys():
-                        #print(key)
                         if price_key == key:
                             #print(price_key)
                             #print(i[price_key])
                             price = (i[price_key])
 
+            if k == 'lastUpdateTime':
+                lastUpdateTime =  (data[k])
+                print(lastUpdateTime)
+
+
         if price != '' :
-            return price
+            return (price, lastUpdateTime)
         else:
             return 'Price not found'
 
@@ -91,6 +96,21 @@ class Nse:
             
         return status
 
+    # Returns days high and low for EQ scrip
+    def get_day_high_low(self, data):
+        for k in  data.keys():
+            if k == 'data':
+                v = data[k]
+                for i in v:
+                    for price_key in i.keys():
+                        if price_key == 'dayLow':
+                            #print(price_key)
+                            #print(i[price_key])
+                            low = (i[price_key])
+                        if price_key == 'dayHigh':
+                            high = (i[price_key])
+
+        return (low, high)
 
 
 '''
