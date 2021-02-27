@@ -6,7 +6,7 @@ Future Scope: Add Mutual Fund, Bond Market, Crypto Data.
 <Development In Progress>
 
 
-Milestone 1: Completed items
+Milestone 1: Completed items  ( till 31 March 2021 / 2021 Q1)
 - Added support fetching NSE stocks data
 - Added support for NSE current price, open price, day highs and low
 - Added Readme support
