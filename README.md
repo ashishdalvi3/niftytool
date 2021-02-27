@@ -21,3 +21,4 @@ Start with discussions https://github.com/ashishdalvi3/niftytool/discussions/23 
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the Contributor Covenant code of conduct
 
 
+Join Discord Link https://discord.gg/7VsevDvHCk for discussions and help.
