@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-import lxml
+import lxml, io
 import json
+import pandas as pd
 
 class Nse:
 
@@ -24,39 +25,54 @@ class Nse:
                 'Referer': 'https://www1.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuote.jsp?symbol=HINDUNILVR&illiquid=0&smeFlag=0&itpFlag=0'
                 }
 
+    def get_validate_stock_codes(self,symbol):
 
-
-    # future work to get scrip details everytime
-    def validate_scrip_code(self):
-
-        return None
+        res = requests.get(self.scrip_csv, headers= self.headers)
+        #print(res.content)
+        df = pd.read_csv(io.StringIO(res.content.decode('utf-8')),index_col=False)
+        #symbol_list = df.SYMBOL
+        #print(df.loc[df['SYMBOL'] == symbol])
+        if (df.loc[df['SYMBOL'] == symbol].empty):
+            return False
+        else:
+            return True 
+    
 
     # This gets full data for any Equity symbol
     def get_scrip_data(self, scrip):
 
         # Double check to convert symbol code to uppercase
         symbol = scrip.upper()
-        print(" Accessing scrip_url " + self.scrip_url_old.format(symbol))
-        res = requests.get(self.scrip_url_old.format(symbol), headers = self.headers)
+        print ("Validating Scrip {} ".format(symbol))
 
-        html_soup = BeautifulSoup(res.text, 'lxml')
-        hresponseDiv = html_soup.find("div", {"id": "responseDiv"})
-        d = json.loads(hresponseDiv.get_text())
-        print(d)
+        exist_scrip = self.get_validate_stock_codes(symbol)
+        if exist_scrip == True:
+
+            print(" Accessing scrip_url " + self.scrip_url_old.format(symbol))
+            res = requests.get(self.scrip_url_old.format(symbol), headers = self.headers)
+
+            html_soup = BeautifulSoup(res.text, 'lxml')
+            hresponseDiv = html_soup.find("div", {"id": "responseDiv"})
+            d = json.loads(hresponseDiv.get_text())
+            print(d)
         #print (d.keys())
         #d = json.loads(res.text)['data'][0]
-        res = {}
-        for k in d.keys():
-            v = d[k]
-            try:
-                v_ = None
-                if v.find('.') > 0:
-                    v_ = float(v.strip().replace(',', ''))
-                else:
-                    v_ = int(v.strip().replace(',', ''))
-            except:
-                v_ = v
-            res[k] = v_
+            res = {}
+            for k in d.keys():
+                v = d[k]
+                try:
+                    v_ = None
+                    if v.find('.') > 0:
+                        v_ = float(v.strip().replace(',', ''))
+                    else:
+                        v_ = int(v.strip().replace(',', ''))
+                except:
+                    v_ = v
+                res[k] = v_
+
+        else:
+            print('Invalid Scrip {}'.format(symbol))
+            quit()
         return res
 
     # This will return latest price of Equity stock
@@ -98,6 +114,8 @@ class Nse:
 
     # Returns days high and low for EQ scrip
     def get_day_high_low(self, data):
+
+        print(data)
         for k in  data.keys():
             if k == 'data':
                 v = data[k]
