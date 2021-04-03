@@ -33,6 +33,6 @@ class Bse:
             soup=BeautifulSoup(response.text,"lxml")
             return soup
 
-
-bse=Bse('tatamotors')
-print(bse.getDayHighAndLow())
+# To enovke the class
+# bse=Bse('tatamotors')
+# print(bse.getDayHighAndLow())
