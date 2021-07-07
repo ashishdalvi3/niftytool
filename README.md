@@ -12,9 +12,11 @@ Milestone 1: Completed items:
 - Added Readme support
 - Added CLI support for NSE
   
-  In Progress items:
+In Progress items for Q3 and Q4 2021:
   - Support for BSE stocks data
   - Top gainers and loosers for Nifty 
+  - Change the name of tool (by Q3 2021)
+  
   
 
 
